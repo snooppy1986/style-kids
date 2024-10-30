@@ -405,16 +405,17 @@ class ProductResource extends Resource
                                             ->createOptionForm([
                                                 Forms\Components\Grid::make(1)->schema([
                                                     TextInput::make('value')
-                                                        ->integer()
+                                                        ->label('Значение')
+                                                        ->integer(),
+
                                                 ]),
 
                                             ])
-                                            ->createOptionUsing(function (array $data):object {
+                                            ->createOptionAction(fn($action) => $action->modalWidth('sm'))
+                                            ->createOptionUsing(function (array $data){
                                                 $size = Size::create([
-                                                   'size_ru'=>$data['title_ru'],
-                                                   'size_ua'=>$data['title_ua']
+                                                   'value'=>$data['value']
                                                 ]);
-
                                                 return $size;
                                             }),
 
