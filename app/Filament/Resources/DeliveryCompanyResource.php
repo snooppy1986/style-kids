@@ -20,6 +20,7 @@ class DeliveryCompanyResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Доставка';
+    protected static ?string $modelLabel = 'почтовой компании';
     protected static ?int $navigationSort = 6;
     public static function form(Form $form): Form
     {

@@ -23,6 +23,9 @@ class CompanyInfoResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-information-circle';
 
     protected static ?string $navigationGroup = 'Контент';
+    protected static ?string $navigationLabel='Информация о компании';
+    protected static ?string $modelLabel = 'информацию о компании';
+
     protected static ?int $navigationSort = 5;
     public static function form(Form $form): Form
     {
