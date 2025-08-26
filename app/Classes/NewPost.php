@@ -20,7 +20,7 @@ class NewPost
         $model::truncate();
         $this->url = 'https://api.novaposhta.ua/v2.0/json/';
         $this->request['apiKey'] = DeliveryCompany::query()
-            ->where('id', 1)
+            ->where('name', '=', 'new_mail')
             ->first()
             ->api_key;
         $this->request['modelName'] = $modelName;

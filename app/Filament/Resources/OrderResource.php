@@ -61,7 +61,7 @@ class OrderResource extends Resource
                             ->schema([
                                 Forms\Components\Select::make('type')
                                     ->label('Компания')
-                                    ->options(DeliveryCompany::all()->pluck('name', 'id')),
+                                    ->options(DeliveryCompany::all()->pluck('name', 'name')),
                                 Forms\Components\TextInput::make('area')
                                     ->label('Область'),
                                 Forms\Components\TextInput::make('city')

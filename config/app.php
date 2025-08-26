@@ -83,7 +83,7 @@ return [
     |
     */
 
-    'locale' => 'ua',
+    'locale' => 'ru',
 
     /*
     |--------------------------------------------------------------------------
@@ -107,8 +107,8 @@ return [
     |
     */
     'available_locales' => [
-        'Ukraine' => 'ua',
-        'Russian' => 'ru',
+        'Українська' => 'ua',
+        'Русский' => 'ru',
     ],
 
     /*
@@ -180,7 +180,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
-        App\Providers\Filament\AdminPanelProvider::class,
+        App\Providers\Filament\AdminPanelProvider1::class,
         App\Providers\RouteServiceProvider::class,
     ])->toArray(),
 

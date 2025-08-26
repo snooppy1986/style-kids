@@ -52,6 +52,8 @@ class CompanyInfo extends Model
         return $this->hasMany(Phone::class);
     }
 
+
+
     public function getLogo()
     {
         if(str_starts_with($this->logo, 'http')){

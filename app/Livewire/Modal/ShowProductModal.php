@@ -26,7 +26,8 @@ class ShowProductModal extends ModalComponent
         $this->sizes = $this->product->skus[0]->sizes;
         $this->activeSize = [
             'product_id' => $this->product->id,
-            'size_id' => $this->product->skus[0]->sizes[0]->size->id
+            'size_id' => $this->sizes->count() ? $this->sizes[0]->size->id : 0,
+            'size_value' => $this->sizes->count() ? $this->sizes[0]->size->value : 0
         ];
     }
 
@@ -72,7 +73,8 @@ class ShowProductModal extends ModalComponent
     {
         $this->activeSize = [
             'product_id' => $product_id,
-            'size_id' => $size_id
+            'size_id' => $size_id,
+            'size_value' => Size::query()->where('id', '=', $size_id)->first()->value
         ];
         /*dd($product_id, $size_id);*/
     }

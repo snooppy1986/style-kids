@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Cart;
 
+use App\Classes\AppMessenger;
 use App\Classes\NewPost;
+use App\Jobs\OrderCreated;
 use App\Models\Customer;
 use App\Models\DeliveryCompany;
 use App\Models\NewPostArea;
@@ -10,7 +12,11 @@ use App\Models\NewPostCity;
 use App\Models\NewPostWarehouse;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
+use App\Notifications\NewOrderNotification;
+use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use JetBrains\PhpStorm\NoReturn;
@@ -48,10 +54,11 @@ class CartIndex extends Component
     public $city_id=null;
     public $warehouses=null;
     public $warehouse=null;
+    public $post_code=null;
     public $new_post_key=null;
     public ?object $size=null;
 
-
+    public $user;
     protected $listeners=['cities', 'warehouses', 'set_warehouses'];
 
     public function mount()
@@ -67,18 +74,22 @@ class CartIndex extends Component
             }
         }
         $this->getTotalPrice($this->products, $this->products_count);
+
+        $this->user = User::query()->first();
+
     }
 
-    public function deliveryType($company_id)
+    public function deliveryType($company_name)
     {
-        if($company_id == 1){
+        if($company_name == 'new_mail'){
             $this->areas();
-            $this->delivery_company = $company_id;
-        }elseif ($company_id == 2){
-            dump('Укрпочта');
-            /*$this->areas();;
-            $this->cities = null;
-            $this->warehouses = null;*/
+            $this->delivery_company = $company_name;
+        }elseif ($company_name== 'ukr_mail'){
+            $this->areas();
+            $this->delivery_company = $company_name;
+        }elseif ($company_name== 'meest_express'){
+            $this->areas();
+            $this->delivery_company = $company_name;
         }
 
     }
@@ -103,16 +114,26 @@ class CartIndex extends Component
         $this->city = NewPostCity::query()
             ->where('Ref', $city_id)
             ->first()->DescriptionRu;
-        $this->warehouses = NewPostWarehouse::query()
-            ->where('CityRef', '=', $city_id)
-            ->get();
+        if($this->delivery_company == 'new_mail'){
+            $this->warehouses = NewPostWarehouse::query()
+                ->where('CityRef', '=', $city_id)
+                ->get();
+        }else{
+            $this->warehouses = $this->delivery_company;
+        }
+
     }
 
     public function set_warehouses($warehouse_id)
     {
-        $this->warehouse = NewPostWarehouse::query()
-            ->where('Ref', $warehouse_id)
-            ->first()->DescriptionRu;
+        if($this->delivery_company == 'new_mail'){
+            $this->warehouse = NewPostWarehouse::query()
+                ->where('Ref', $warehouse_id)
+                ->first()->DescriptionRu;
+        }else{
+            $this->warehouse = $warehouse_id;
+        }
+
     }
 
     public function clearCart()
@@ -149,12 +170,11 @@ class CartIndex extends Component
     }
 
     #[NoReturn]
-    public function updateCount($key, $value)
+    public function updateCount($product_id, $value)
     {
-        $session_data = Session::get('p_c');
-        $session_data[$key]['count'] = $value;
-        Session::put('p_c', $session_data);
-        $this->products_count[$key] = $value;
+
+        $this->products[$product_id]['count'] = $value;
+        $this->products_count[$product_id] = $value;
         $this->getTotalPrice($this->products, $this->products_count);
         $this->dispatch('updateCount');
     }
@@ -178,7 +198,6 @@ class CartIndex extends Component
     }
     public function saveOrder()
     {
-        /*dd($this->products);*/
         $this->validate();
         /*dd($this->name);*/
         $customer = Customer::query()->create([
@@ -197,10 +216,11 @@ class CartIndex extends Component
             ]);
 
         $order->delivery()->create([
-            'type' => /*$this->delivery_companies->where('id', 1)->first()->name*/ 'test',
+            'type' => $this->delivery_company,
             'area' => $this->area,
             'city' => $this->city,
-            'warehouse' => $this->warehouse
+            'warehouse' => $this->warehouse ? $this->warehouse : $this->post_code,
+
         ]);
         if($this->products){
             foreach ($this->products as $product){
@@ -216,6 +236,12 @@ class CartIndex extends Component
             }
         }
         $this->clearCart();
+        /*Create send mail and notification job*/
+
+
+
+        dispatch(new OrderCreated($order, $customer->email));
+
         return $this->redirectRoute('order.complete', navigate: true);
     }
     public function render()

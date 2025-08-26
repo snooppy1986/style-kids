@@ -26,11 +26,11 @@ class OrderProduct extends Model
 
     public function sku(): HasOne
     {
-        return $this->hasOne(Sku::class, 'code', 'sku_id');
+        return $this->hasOne(Sku::class, 'id', 'sku_id');
     }
 
     public function sizes(): HasOne
     {
-        return $this->hasOne(Size::class, 'id', 'size');
+        return $this->hasOne(Size::class, 'value', 'size');
     }
 }

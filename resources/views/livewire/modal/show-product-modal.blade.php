@@ -1,7 +1,7 @@
 <!--start quick view product-->
 
 <!-- Modal -->
-<div class="">
+<div class="flex justify-center items-center">
     <style>
         .btn-close:hover{
             font-weight: 800;
@@ -10,7 +10,7 @@
             box-shadow: none;
         }
     </style>
-    <div  class="modal-dialog modal-dialog-centered modal-xl modal-fullscreen-xl-down">
+    <div class="modal-dialog modal-dialog-centered modal-xl modal-fullscreen-xl-do">
         <div class="modal-content rounded-0 border-0">
             <div class="modal-header">
                 <h3 class="text-uppercase fw-bolder">{{$product->shortTitle()}}</h3>
@@ -59,8 +59,8 @@
                                 </div>
                                 <dl class="row mt-3">
                                     <dt class="col-sm-3">{{__('Code product')}}</dt>
-                                    <dd class="col-sm-9">{{$product->prom_unique_id}}</dd>
-                                    <dt class="col-sm-3">Доставка</dt>
+                                    <dd class="col-sm-9">{{$product->code}}</dd>
+                                    <dt class="col-sm-3">{{__('Delivery')}}</dt>
                                     <dd class="col-sm-9">{{__('New post')}}, {{__('Ukr post')}} <dd>
                                 </dl>
                                 <div class="row row-cols-auto align-items-center mt-3">
@@ -75,28 +75,23 @@
                                     @endif
 
                                     <div class="col">
-                                        <label class="form-label">Цвет</label>
+                                        <label class="form-label">{{__('Colors')}}</label>
                                         <div  class="color-indigators d-flex align-items-center gap-2">
                                             @foreach($product->skus as $key=>$item)
                                                 <span  wire:click="changeSku({{$item->id}})"
                                                        class="d-inline-block rounded-circle color-indigator-item {{$item->id == $sku->id ? 'border border-info border-2' : ''}}"
                                                        style="background-color: {{$item->color}}"></span>
-                                                {{--<a wire:navigate
-                                                   href="{{route('product.show', ['slug' => session()->get('locale')=='ua' || session()->get('locale')==null ? $product->slug_ua : $product->slug_ru, 'color'=>$item->color])}}">
-                                                    <div --}}{{--wire:click="changeAttribute({{$item->id}})"--}}{{--
-                                                         class="{{$item->id == $sku->id ? 'border-info' : ''}} color-indigator-item rounded-circle border border-2"
-                                                         style="background-color: {{$item->color}};"
-                                                         data-id="{{$item->id}}"
-                                                         --}}{{--@click="opacity()"--}}{{--
-                                                    ></div>
-                                                </a>--}}
                                             @endforeach
                                         </div>
                                     </div>
                                 </div>
                                 <!--end row-->
                                 <div class="d-flex gap-2 mt-3">
-                                    <livewire:cart.cart-button-primary wire:ignore :productId="$product->id" :skuCode="'\''.$product->skus[0]->code.'\''"/>
+
+                                    <livewire:cart.cart-button-primary wire:ignore
+                                                                       :productId="$product->id"
+                                                                       :skuId="$sku->id"
+                                                                       :sizeValue="$activeSize['size_value']" />
 
                                     <livewire:wishlist.wishlist-button  :product_id="$product->id" :type="'button'" />
                                 </div>

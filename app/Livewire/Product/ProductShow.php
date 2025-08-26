@@ -32,8 +32,8 @@ class ProductShow extends Component
         $this->getSizes();
         $this->activeSize = [
             'product_id' => $this->product->id,
-            'size_id' => $this->sku->sizes[0]->size->id,
-            'size_value' => $this->sku->sizes[0]->size->value
+            'size_id' => $this->sizes->count() ? $this->sizes[0]->size->id : 0,
+            'size_value' => $this->sizes->count() ? $this->sizes[0]->size->value : 0
         ];
     }
     public function rendered()

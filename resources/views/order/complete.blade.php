@@ -19,13 +19,13 @@
                 <div class="container">
                     <div class="card py-3 mt-sm-3">
                         <div class="card-body text-center">
-                            <h2 class="h4 pb-3">Спасибо за ваш заказ!</h2>
-                            <p class="fs-sm mb-2">Ваш заказ размещен и будет обработан в ближайшее время.</p>
+                            <h2 class="h4 pb-3">{{__('Thanks for order')}}!</h2>
+                            <p class="fs-sm mb-2">{{__('Your order has been placed and will be processed shortly')}}.</p>
                             {{--<p class="fs-sm mb-2">Make sure you make note of your order number, which is <span class="fw-medium">34VB5540K83.</span>
                             </p>
                             <p class="fs-sm">You will be receiving an email shortly with confirmation of your order. <u>You can now:</u>--}}
                             </p>
-                            <a wire:navigate class="btn btn-light rounded-0 mt-3 me-3" href="{{route('main')}}">Вернуться к покупкам</a>
+                            <a wire:navigate class="btn btn-light rounded-0 mt-3 me-3" href="{{route('main')}}">{{__('Continue shopping')}}</a>
                         </div>
                     </div>
                 </div>

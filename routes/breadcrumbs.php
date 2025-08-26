@@ -11,7 +11,7 @@ use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 // Home
 Breadcrumbs::for('main', function (BreadcrumbTrail $trail) {
     $trail->push(
-        session()->get('locale') == 'ua' || session()->get('locale') == null ? 'Головна' : 'Главная',
+        session()->get('locale') && session()->get('locale')=='ua' ? 'Головна' : 'Главная',
         route('main')
     );
 });
@@ -19,16 +19,17 @@ Breadcrumbs::for('main', function (BreadcrumbTrail $trail) {
 // Home > Category
 Breadcrumbs::for('category', function (BreadcrumbTrail $trail, $category) {
     $trail->parent('main');
-    foreach ($category->ancestors as $ancector){
-        $trail->push($ancector->shortTitle(), route('category.show', $ancector));
+    if($category->parent){
+        $trail->push($category->parent->shortTitle(), route('category.show', $category->parent));
     }
+
     $trail->push($category->shortTitle(), route('category.show', $category));
 });
 // Home > All Categories
 Breadcrumbs::for('all_categories', function (BreadcrumbTrail $trail){
     $trail->parent('main');
     $trail->push(
-        session()->get('locale') == 'ua' || session()->get('locale') == null ? 'Всі категорії' : 'Все категории',
+        session()->get('locale') && session()->get('locale')=='ua' ? 'Всі категорії' : 'Все категории',
         route('category.index')
     );
 });
@@ -36,7 +37,7 @@ Breadcrumbs::for('all_categories', function (BreadcrumbTrail $trail){
 Breadcrumbs::for('all_products', function (BreadcrumbTrail $trail){
     $trail->parent('main');
     $trail->push(
-        session()->get('locale') == 'ua' || session()->get('locale') == null ? 'Всі товари' : 'Все товары',
+        session()->get('locale') && session()->get('locale')=='ua' ? 'Всі товари' : 'Все товары',
         route('product.index')
     );
 });
@@ -49,7 +50,7 @@ Breadcrumbs::for('product', function (BreadcrumbTrail $trail, $product) {
 Breadcrumbs::for('wishlist', function (BreadcrumbTrail $trail){
    $trail->parent('main');
    $trail->push(
-       session()->get('locale') == 'ua' || session()->get('locale') == null ? 'Обране' : 'Избранное',
+       session()->get('locale') && session()->get('locale')=='ua' ? 'Обране' : 'Избранное',
        route('wishlist.show')
    );
 });
@@ -57,7 +58,7 @@ Breadcrumbs::for('wishlist', function (BreadcrumbTrail $trail){
 Breadcrumbs::for('cart', function (BreadcrumbTrail $trail){
     $trail->parent('main');
     $trail->push(
-        session()->get('locale') == 'ua' || session()->get('locale') == null ? 'Кошик' : 'Корзина',
+        session()->get('locale') && session()->get('locale')=='ua' ? 'Кошик' : 'Корзина',
         route('cart.index')
     );
 });
@@ -65,7 +66,7 @@ Breadcrumbs::for('cart', function (BreadcrumbTrail $trail){
 Breadcrumbs::for('order_complete', function (BreadcrumbTrail $trail){
     $trail->parent('main');
     $trail->push(
-        session()->get('locale') == 'ua' || session()->get('locale') == null ? 'Замовлення оформлено' : 'Заказ оформлен',
+        session()->get('locale') && session()->get('locale')=='ua' ? 'Замовлення оформлено' : 'Заказ оформлен',
         route('order.complete')
     );
 });
@@ -74,7 +75,7 @@ Breadcrumbs::for('order_complete', function (BreadcrumbTrail $trail){
 Breadcrumbs::for('search', function (BreadcrumbTrail $trail){
     $trail->parent('main');
     $trail->push(
-        session()->get('locale') == 'ua' || session()->get('locale') == null ? 'Пошук' : 'Поиск',
+        session()->get('locale') && session()->get('locale')=='ua' ? 'Пошук' : 'Поиск',
         route('search.index')
     );
 });

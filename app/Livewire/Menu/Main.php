@@ -7,11 +7,9 @@ use Livewire\Component;
 
 class Main extends Component
 {
+    public $categories;
     public function render()
     {
-        $categories = Category::query()
-            ->whereNull('parent_id')
-            ->get();
-        return view('livewire.menu.main')->with('categories', $categories);
+        return view('livewire.menu.main');
     }
 }

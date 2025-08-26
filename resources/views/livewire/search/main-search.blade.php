@@ -29,12 +29,12 @@
             </span>
         @endif
 
-        <select wire:change="setCategory($event.target.value)" class="form-select flex-shrink-0" aria-label="Default select example" style="width: 10.5rem;">
+        {{--<select wire:change="setCategory($event.target.value)" class="form-select flex-shrink-0" aria-label="Default select example" style="width: 10.5rem;">
             <option value="null" selected>{{__('All categories')}}</option>
             @foreach($categories as $category)
                 <option value="{{$category->id}}">{{session()->get('locale')  == 'ru' ||  session()->get('locale')==null ? $category->title_ru : $category->title_ua}}</option>
             @endforeach
-        </select>
+        </select>--}}
         <span wire:click="searchPage" class="input-group-text cursor-pointer bg-transparent">
             <i class='bx bx-search'></i>
         </span>

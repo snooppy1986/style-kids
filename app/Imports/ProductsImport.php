@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Enums\PrimaryColor;
 use App\Models\Product;
 use App\Models\Sku;
+use App\Models\User;
 use App\Notifications\SuccessNotification;
 use App\Traits\FileProcessing;
 use App\Traits\ProductImportGetSpecialValues;
@@ -34,7 +35,7 @@ class ProductsImport implements ToCollection, WithStartRow, WithMultipleSheets, 
 
     public function __construct()
     {
-        $this->user = \Auth::user();
+        $this->user = User::query()->first();
         $this->startTime = date(format: 'Y-m-d H:i:s');
     }
 

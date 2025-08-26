@@ -122,12 +122,12 @@ class Product extends Model
 
     public function shortTitle(): string
     {
-        return Str::words(session()->get('locale') == 'ru' ? $this->title_ru : $this->title_ua, 12);
+        return Str::words(session()->get('locale') == 'ua' ? $this->title_ua : $this->title_ru, 12);
     }
 
     public function shortBody(): string
     {
-        return Str::words(session()->get('locale') == 'ru' ? $this->body_ru : $this->body_ua, 60);
+        return Str::words(session()->get('locale') == 'ua' ? $this->body_ua : $this->body_ru, 60);
     }
 
     public function getThumbnail()

@@ -27,7 +27,7 @@
                     @foreach($product->categories as $category)
                         <a href="{{route('category.show', ['id'=>$category->id])}}">
                         <span class="product-catergory font-13 mb-1">
-                            {{session()->get('locale')=='ru' ? \Illuminate\Support\Str::words($category->title_ru, 3) : \Illuminate\Support\Str::words($category->title_ua, 3)}}
+                            {{session()->get('locale') && session()->get('locale')=='ua' ? \Illuminate\Support\Str::words($category->title_ua, 3) : \Illuminate\Support\Str::words($category->title_ru, 3)}}
                         </span>
                         </a>
                     @endforeach
@@ -36,7 +36,7 @@
 
                 {{--Product title--}}
                 <div style="height: 60px">
-                    <a wire:navigate href="{{route('product.show', ['slug' => session()->get('locale')=='ua' || session()->get('locale')==null ? $product->slug_ua : $product->slug_ru])}}">
+                    <a wire:navigate href="{{route('product.show', ['slug' => session()->get('locale') && session()->get('locale')=='ua' || session()->get('locale')==null ? $product->slug_ua : $product->slug_ru])}}">
                         <h6 class="product-name mb-2">{{$product->shortTitle()}}</h6>
                     </a>
                 </div>
@@ -59,10 +59,12 @@
                     </div>
                     <hr>
                     {{--sizes line--}}
+                    @if($sizes->count())
                         <div class="mt-2 mb-2">
                             <x-sizes-row :product="$product" :sizes="$sizes" :activeSize="$activeSize"/>
                         </div>
                         <hr>
+                    @endif
                     {{--price line--}}
                         <div class="mt-2 mb-1 product-price">
                              @if($sku->discount_price)
@@ -74,23 +76,8 @@
                                  <span class="fs-5">{{$sku->price}} &#8372</span>
                              @endif
                         </div>
-                    {{--@foreach($colors as $key => $color)
-                        <a wire:navigate href="{{route('product.show', ['slug' => session()->get('locale')=='ua' || session()->get('locale')==null ? $product->slug_ua : $product->slug_ru])}}">
-                            <span  class="d-inline-block rounded-circle color-item" style="background-color: {{$color}}"></span>
-                        </a>
-                    @endforeach--}}
                 </div>
                 <div class="d-flex align-items-center">
-                    <div class="mb-1 product-price">
-                       {{-- @if($sku[0]->discount_price)
-                            <span class="me-1 text-decoration-line-through">
-                                {{$sku[0]->price}} &#8372
-                            </span>
-                            <span class="fs-5">{{$sku[0]->discount_price}} &#8372</span>
-                        @else
-                            <span class="fs-5">{{$sku[0]->price}} &#8372</span>
-                        @endif--}}
-                    </div>
                     <livewire:comment.rating-stars-and-count-reviews :comments="$product->comments"  :margin="true"/>
                     {{--<x-rating-stars rating="{{$product->comments()->avg('rating')}}" margin="{{true}}"/>--}}
                 </div>
@@ -102,7 +89,7 @@
 
                         />
                         @if($type=='product')
-                            <livewire:modal.show-product-button wire:ignore  :id="$product->id"/>
+                            {{--<livewire:modal.show-product-button   :id="$product->id"/>--}}
                         @else
                             <livewire:wishlist.remove-button wire:ignore :product_id="$product->id" :key="$product->id"/>
                         @endif

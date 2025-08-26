@@ -16,6 +16,7 @@ class OrderStats extends BaseWidget
 
     protected static ?string $pollingInterval = null;
 
+
     protected function getTablePage(): string
     {
         return ManageOrders::class;
@@ -28,17 +29,18 @@ class OrderStats extends BaseWidget
                 start: now()->subYear(),
                 end: now()
             )
-            ->perMonth()
+            ->perYear()
             ->count();
         return [
-            Stat::make('Заказов', $this->getPageTableQuery()->count())
+            Stat::make('Всего заказов', $this->getPageTableQuery()->count())
+                ->color('success')
                 ->chart(
                     $orderData
                         ->map(fn(TrendValue $value) => $value->aggregate)
                         ->toArray()
                 ),
-            /*Stat::make('Open orders', $this->getPageTableQuery()->whereIn('status', ['open', 'processing'])->count()),*/
-            Stat::make('Средняя стоимость заказа', number_format($this->getPageTableQuery()->avg('total_price'), 2)),
+
+            Stat::make('Средняя стоимость заказов', number_format($this->getPageTableQuery()->avg('total_price'), 2)),
         ];
     }
 }

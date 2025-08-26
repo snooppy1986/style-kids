@@ -23,54 +23,17 @@ class ProductItem extends Component
 
     public function mount()
     {
+
         $this->sku = $this->product->skus[0];
-        $this->sizes = $this->product->skus[0]->sizes;
+        $this->sizes = $this->sku->sizes;
+
         $this->activeSize = [
             'product_id' => $this->product->id,
-            'size_id' => $this->product->skus[0]->sizes[0]->size->id,
-            'size_value' => $this->product->skus[0]->sizes[0]->size->value
+            'size_id' => $this->sizes->count() ? $this->sizes[0]->size->id : 0,
+            'size_value' => $this->sizes->count() ? $this->sizes[0]->size->value : 0
         ];
         $this->getColors($this->product);
     }
-
-    /*#[On('actionBuy')]*/
-    /*public function addProductToCart($id, $skuCode)
-    {
-
-        $product = Product::query()
-            ->with(['skus'=>function($query) use($skuCode){
-                $query->where('code', $skuCode);
-            }])
-            ->where('id', $id)
-            ->first();
-        if(Session::has('p_c')){
-            $session_data = Session::get('p_c');
-            if (isset($session_data[$this->sku->code])){
-                $session_data[$this->sku->code]['count'] +=intval($this->count);
-                if($this->size){
-                    $session_data[$this->sku->code]['size'][] = $this->size;
-                }
-            }else{
-                $session_data[$this->sku->code]=['product_id'=>$this->product->id, 'sku_id'=>$this->sku->id, 'count'=>intval($this->count)];
-                if($this->size){
-                    $session_data[$this->sku->code]['size'][] = $this->size;
-                }
-            }
-            Session::put('p_c', $session_data);
-        }else{
-            $data[$this->sku->code] = ['product_id'=>$this->product->id, 'sku_id'=>$this->sku->id, 'count'=>intval($this->count)];
-            if($this->size){
-                $session_data[$this->sku->code]['size'][] = $this->size;
-            }
-            Session::put('p_c', $data);
-        }
-        $this->productCart= Session::get('p_c');
-
-        $this->dispatch('updateButtonActive');
-        $this->dispatch('update_input_count');
-        $this->dispatch('updateCount');
-        dump($this->productCart);
-    }*/
 
     public function getColors($products)
     {
