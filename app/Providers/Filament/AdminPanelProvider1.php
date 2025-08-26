@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Resources\OrderResource\Widgets\OrderStats;
+use App\Filament\Widgets\OrdersCountChart;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -18,7 +20,7 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
-class AdminPanelProvider extends PanelProvider
+class AdminPanelProvider1 extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
@@ -37,8 +39,10 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                OrderStats::class,
+                OrdersCountChart::class
+                /*Widgets\AccountWidget::class,*/
+                /*Widgets\FilamentInfoWidget::class,*/
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -53,8 +57,11 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->databaseNotifications()
             ->databaseNotificationsPolling('60s')
+            ->sidebarWidth('16rem')
             ->authMiddleware([
                 Authenticate::class,
             ]);
     }
+
+
 }
