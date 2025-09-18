@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Repositories\Product\ProductRepository;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -17,35 +18,18 @@ class ProductController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      */
-    public function show(string $slug, string $color='')
+    public function show(
+        ProductRepository $productRepository,
+        string $slug, 
+        string $color=''
+    )
     {
-        $locale = session()->get('locale');
+        //$locale = session()->get('locale');
 
         /*dd($color);*/
-        $product = Product::query()
-            ->with(['comments', 'skus'])
-            ->where('active', 1)
-            ->where('slug_ru', $slug)
-            ->orWhere('slug_ua', $slug)
-            ->first();
+        $product = $productRepository->getProductBySlug($slug);
 
         $similar_products = $product->categories[0]->products->where('active', '=', 1);
 

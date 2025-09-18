@@ -13,7 +13,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+       /*  $this->app->bind('App\Interfaces\ProductRepositoryInterface', 'App\Repositories\Product\ProductRepository');
+        $this->app->bind('App\Interfaces\CategoryRepositoryInterface', 'App\Repositories\Category\CategoryRepository'); */
     }
 
     /**
