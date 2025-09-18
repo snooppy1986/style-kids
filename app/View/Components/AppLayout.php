@@ -28,7 +28,7 @@ class AppLayout extends Component
 
         $categories = Category::query()
             ->with('children')
-            ->where('parent_id', '=', 0)
+            ->whereNull('parent_id')
             ->get();
         $company_info = CompanyInfo::query()->where('active', '=', 1)->first();
 

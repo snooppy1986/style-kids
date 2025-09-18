@@ -26,10 +26,14 @@ class DeliveryCompanyResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                Forms\Components\Select::make('name')
                     ->label('Название')
-                    ->required()
-                    ->maxLength(256),
+                    ->options([
+                        'new_mail'=>'Новая почта',
+                        'ukr_mail'=>'Укрпочта',
+                        'meest_express'=>'MeestExpress'
+                    ])
+                    ->required(),
                 Forms\Components\TextInput::make('api_key')
                     ->label('Ключь API')
                     ->maxLength(255),

@@ -29,15 +29,7 @@ class MainSearch extends Component
                     ->get();
 
             }else{
-               /* $this->products = Category::query()
-                    ->with([
-                        'recursiveProducts' => function($query){
-                            $query->where('title', 'like', "%$this->search%");
-                        }
-                    ])
-                    ->where('id', $this->category)
-                    ->limit(5)
-                    ->first()->recursiveProducts;*/
+
                 $this->products = Category::find($this->category)
                     ->recursiveProducts()
                     ->where('title_ru', 'like', "%$this->search%")

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use mysql_xdevapi\Collection;
 use PhpParser\Node\Expr\Array_;
@@ -59,9 +60,13 @@ class Category extends Model
 
     public function products(): BelongsToMany
     {
-        return $this->belongsToMany(Product::class);
+        return $this->belongsToMany(Product::class)->where('active', 1);
     }
 
+    public function parent()
+    {
+        return $this->hasOne(self::class, 'id', 'parent_id');
+    }
     public function children(): hasMany
     {
         return $this->hasMany(self::class, 'parent_id');
@@ -77,7 +82,7 @@ class Category extends Model
     }
     public function shortTitle(): string
     {
-        return Str::words(session()->get('locale') == 'ua' || session()->get('locale') == null ? $this->title_ua : $this->title_ru, 2);
+        return Str::words(session()->get('locale') && session()->get('locale')=='ua' ? $this->title_ua : $this->title_ru, 2);
     }
     public function getThumbnail()
     {
@@ -86,4 +91,6 @@ class Category extends Model
         }
         return 'storage/'.$this->thumbnail;
     }
+
+
 }

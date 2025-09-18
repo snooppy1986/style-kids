@@ -58,18 +58,18 @@
                                 </div>
                                 <x-price-box :sku="$sku"/>
                                 <div class="mt-3">
-                                    <h6>Описание :</h6>
+                                    <h6>{{__('Description')}} :</h6>
                                     <p class="mb-0">{!! $product->shortBody() !!}</p>
                                 </div>
                                 <dl class="row mt-3">
                                     <dt class="col-sm-3">Код продукта</dt>
                                     <dd class="col-sm-9">{{$sku->code}}</dd>
-                                    <dt class="col-sm-3">Доставкв</dt>
-                                    <dd class="col-sm-9">Новая почта, Укрпочта<dd>
+                                    <dt class="col-sm-3">{{__('Delivery')}}</dt>
+                                    <dd class="col-sm-9">{{__('New post')}}, {{__('Ukr post')}}<dd>
                                 </dl>
                                 <div class="row row-cols-auto align-items-center mt-3">
                                     <div class="col col-md-2">
-                                        <label for="count" class="form-label">К-во</label>
+                                        <label for="count" class="form-label">{{__('Qty')}}</label>
                                         <div  class="cart-action text-center">
                                             <input
                                                 @click="getCount()"
@@ -88,7 +88,7 @@
                                     @endif
 
                                     <div class="col">
-                                        <label class="form-label">Цвет</label>
+                                        <label class="form-label">{{__('Colors')}}</label>
                                         <div  class="color-indigators d-flex align-items-center gap-2">
                                             @foreach($product->skus as $key=>$item)
                                                 <span  wire:click="changeSku({{$item->id}})"
@@ -156,7 +156,7 @@
                     <li class="nav-item" role="presentation">
                         <a class="nav-link active" data-bs-toggle="tab" href="#discription" role="tab" aria-selected="true">
                             <div class="d-flex align-items-center">
-                                <div class="tab-title text-uppercase fw-500">Описание</div>
+                                <div class="tab-title text-uppercase fw-500">{{__('Description')}}</div>
                             </div>
                         </a>
                     </li>
@@ -171,14 +171,14 @@
                     <li class="nav-item" role="presentation">
                         <a class="nav-link" data-bs-toggle="tab" href="#reviews" role="tab" aria-selected="false">
                             <div class="d-flex align-items-center">
-                                <div class="tab-title text-uppercase fw-500">({{count($product->comments)}}) Отзывы</div>
+                                <div class="tab-title text-uppercase fw-500">({{count($product->comments)}}) {{__('Reviews')}}</div>
                             </div>
                         </a>
                     </li>
                 </ul>
                 <div class="tab-content pt-3">
                     <div class="tab-pane fade show active" id="discription" role="tabpanel">
-                        <p>{!!session()->get('locale')=='ru' ? $product->body_ru : $product->body_ua !!}</p>
+                        <p>{!!session()->get('locale') && session()->get('locale')=='ua' ? $product->body_ua : $product->body_ru !!}</p>
                     </div>
 
                     <div class="tab-pane fade" id="more-info" role="tabpanel">

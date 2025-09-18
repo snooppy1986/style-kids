@@ -15,54 +15,6 @@
                     @foreach($slides as $key=>$slide)
                         <x-slide-item :slide="$slide" :key="$key"></x-slide-item>
                     @endforeach
-                    {{--<div class="carousel-item active bg-dark-gery">
-                        <div class="row d-flex align-items-center">
-                            <div class="col d-none d-lg-flex justify-content-center">
-                                <div class="">
-                                    <h3 class="h3 fw-light">Has just arrived!</h3>
-                                    <h1 class="h1">Huge Summer Collection</h1>
-                                    <p class="pb-3">Swimwear, Tops, Shorts, Sunglasses &amp; much more...</p>
-                                    <div class=""> <a class="btn btn-dark btn-ecomm" href="javascript:;">Shop Now <i class='bx bx-chevron-right'></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <img src="assets/images/slider/04.png" class="img-fluid" alt="...">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item bg-dark-gery">
-                        <div class="row d-flex align-items-center">
-                            <div class="col d-none d-lg-flex justify-content-center">
-                                <div class="">
-                                    <h3 class="h3 fw-light">Hurry up! Limited time offer.</h3>
-                                    <h1 class="h1">Women Sportswear Sale</h1>
-                                    <p class="pb-3">Sneakers, Keds, Sweatshirts, Hoodies &amp; much more...</p>
-                                    <div class=""> <a class="btn btn-dark btn-ecomm" href="javascript:;">Shop Now <i class='bx bx-chevron-right'></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <img src="assets/images/slider/05.png" class="img-fluid" alt="...">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item bg-dark-gery">
-                        <div class="row d-flex align-items-center">
-                            <div class="col d-none d-lg-flex justify-content-center">
-                                <div class="">
-                                    <h3 class="h3 fw-light">Complete your look with</h3>
-                                    <h1 class="h1">New Men's Accessories</h1>
-                                    <p class="pb-3">Hats &amp; Caps, Sunglasses, Bags &amp; much more...</p>
-                                    <div class=""> <a class="btn btn-dark btn-ecomm" href="javascript:;">Shop Now <i class='bx bx-chevron-right'></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <img src="assets/images/slider/03.png" class="img-fluid" alt="...">
-                            </div>
-                        </div>
-                    </div>--}}
                 </div>
                 <a class="carousel-control-prev" href="#carouselExampleDark" role="button" data-bs-slide="prev">	<span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
@@ -82,60 +34,7 @@
                 <x-information-widget></x-information-widget>
             </section>
             <!--end information-->
-            <!--start pramotion-->
-          {{--  <section class="py-4">
-                <div class="container">
-                    <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3">
-                        <div class="col">
-                            <div class="card rounded-0 border shadow-none">
-                                <div class="row g-0 align-items-center">
-                                    <div class="col">
-                                        <img src="assets/images/promo/01.png" class="img-fluid" alt="" />
-                                    </div>
-                                    <div class="col">
-                                        <div class="card-body">
-                                            <h5 class="card-title text-uppercase">Mens' Wear</h5>
-                                            <p class="card-text text-uppercase">Starting at $9</p>	<a href="javascript:;" class="btn btn-dark btn-ecomm">SHOP NOW</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card rounded-0 border shadow-none">
-                                <div class="row g-0 align-items-center">
-                                    <div class="col">
-                                        <img src="assets/images/promo/02.png" class="img-fluid" alt="" />
-                                    </div>
-                                    <div class="col">
-                                        <div class="card-body">
-                                            <h5 class="card-title text-uppercase">Womens' Wear</h5>
-                                            <p class="card-text text-uppercase">Starting at $9</p>	<a href="javascript:;" class="btn btn-dark btn-ecomm">SHOP NOW</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card rounded-0 border shadow-none">
-                                <div class="row g-0 align-items-center">
-                                    <div class="col">
-                                        <img src="assets/images/promo/03.png" class="img-fluid" alt="" />
-                                    </div>
-                                    <div class="col">
-                                        <div class="card-body">
-                                            <h5 class="card-title text-uppercase">Kids' Wear</h5>
-                                            <p class="card-text text-uppercase">Starting at $9</p>	<a href="javascript:;" class="btn btn-dark btn-ecomm">SHOP NOW</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--end row-->
-                </div>
-            </section>--}}
-            <!--end pramotion-->
+
             <!--start Featured product-->
             <section class="py-4">
                 <div class="container">
@@ -189,7 +88,7 @@
                     <div class="product-grid">
                         <div class="browse-category owl-carousel owl-theme">
                             @foreach($categories as $category)
-                                @if($category->parent_id>0)
+                                @if(!$category->parent_id)
                                     <x-category-item :category="$category"></x-category-item>
                                 @endif
                             @endforeach

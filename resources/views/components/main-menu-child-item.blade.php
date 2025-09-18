@@ -3,7 +3,8 @@
         <li>
             @if(count($cat->children)>0)
                 <a wire:navigate class="dropdown-item d-flex justify-content-between" href="{{route('category.show', ['id'=>$cat->id])}}">
-                    {{session()->get('locale')=='ru' ? $cat->title_ru : $cat->title_ua}} <i class='bx bx-chevron-right'></i>
+                    {{session()->get('locale') && session()->get('locale')=='ua' ? $cat->title_ua : $cat->title_ru}}
+                    <i class='bx bx-chevron-right'></i>
                 </a>
                 <ul class="submenu dropdown-menu">
                             @foreach($cat->children as $item)
@@ -13,7 +14,8 @@
                                            class="dropdown-item dropdown-toggle dropdown-toggle-nocaret d-flex justify-content-between"
                                            href="{{route('category.show', ['id'=>$item->id])}}"
                                         >
-                                            {{session()->get('locale')=='ru' ? $item->title_ru : $item->title_ua}} <i class='bx bx-chevron-right'></i>
+                                            {{session()->get('locale') && session()->get('locale')=='ua' ? $item->title_ua : $item->title_ru}}
+                                            <i class='bx bx-chevron-right'></i>
                                         </a>
                                         <x-main-menu-child-item :child="$item->children" :submenu="true"></x-main-menu-child-item>
                                     @else
@@ -21,7 +23,7 @@
                                            class="dropdown-item d-flex justify-content-between"
                                            href="{{route('category.show', ['id'=>$item->id])}}"
                                         >
-                                            {{session()->get('locale')=='ru' ? $item->title_ru : $item->title_ua}}
+                                            {{session()->get('locale') && session()->get('locale')=='ua' ? $item->title_ua : $item->title_ru}}
                                         </a>
                                     @endif
                                 </li>

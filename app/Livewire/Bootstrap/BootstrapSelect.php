@@ -2,16 +2,19 @@
 
 namespace App\Livewire\Bootstrap;
 
+use Livewire\Attributes\Modelable;
 use Livewire\Component;
 
 class BootstrapSelect extends Component
 {
     public $areas;
     public $type;
+    #[Modelable]
+    public $value = '';
 
     public function area($area_id)
     {
-        /*dump($area_id, $this->type);*/
+        /*dd($this->type, $area_id);*/
         $this->dispatch($this->type, $area_id);
     }
     public function render()

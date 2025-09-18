@@ -65,6 +65,7 @@
                 @endif
 
                 @foreach ($getOptions() as $value => $label)
+                    {{--@dd($label)--}}
                     @if (is_array($label))
                         <optgroup label="{{ $value }}">
                             @foreach ($label as $groupedValue => $groupedLabel)
@@ -88,7 +89,15 @@
                             @if ($isHtmlAllowed)
                                 {!! $label !!}
                             @else
-                                {{ $label }}
+                                @if($label == 'new_mail')
+                                    Новая почта
+                                @elseif($label == 'ukr_mail')
+                                    Укрпочта
+                                @elseif($label == 'meest_express')
+                                    MeestExpress
+                                @else
+                                    {{ $label }}
+                                @endif
                             @endif
                         </option>
                     @endif

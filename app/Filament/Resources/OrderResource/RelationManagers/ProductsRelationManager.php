@@ -37,7 +37,12 @@ class ProductsRelationManager extends RelationManager
                                     return new HtmlString('<span class="text-primary-500">Нужно выбрать товар.</span>');
                                 }
                             })
-                            ->options(Product::all()->pluck('title', 'id'))
+                            ->options(Product::all()->pluck('title_ru', 'id'))
+                            ->afterStateUpdated(function (Get $get, Set $set){
+                                $set('sku_id', '');
+                                $set('color', '');
+                                $set('unit_price', '');
+                            })
                             ->live()
                             ->required(),
                         Select::make('sku_id')
@@ -56,7 +61,7 @@ class ProductsRelationManager extends RelationManager
                                             ->where('id', $get('product_id'))
                                             ->first()
                                             ->skus
-                                            ->pluck('code', 'code')
+                                            ->pluck('code', 'id')
                                             ->toArray();
                                     }
 
@@ -67,17 +72,18 @@ class ProductsRelationManager extends RelationManager
                             ->afterStateUpdated(
                                 function(Set $set, $state){
                                     $sku = Sku::query()
-                                        ->where('code', $state)
+                                        ->where('id', $state)
                                         ->first();
-                                    /*dd($sku->sizes->pluck('size', 'id'));*/
-                                    $set('color', $sku->color);
-                                    $set('unit_price', $sku->discount_price ?? $sku->price);
+
+                                    $set('color', $sku->color ? $sku->color : '');
+                                    $set('unit_price',  $sku->price);
 
                                 }
                              ),
 
                         Forms\Components\ColorPicker::make('color')
-                            ->label('Цвет'),
+                            ->label('Цвет')
+                            ->live(),
 
                         Forms\Components\TextInput::make('unit_price')
                             ->label('Цена')
@@ -98,11 +104,11 @@ class ProductsRelationManager extends RelationManager
                                     if($get('sku_id')){
                                         $sku = Sku::query()
                                             ->with('sizes')
-                                            ->where('code', $get('sku_id'))
+                                            ->where('id', $get('sku_id'))
                                             ->first();
 
                                         if($sku && $sku->sizes){
-                                            return $sku->sizes->pluck('size', 'id');
+                                            return $sku->sizes->pluck('size.value', 'size.value');
                                         }
                                     }
                                 }
@@ -124,11 +130,11 @@ class ProductsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('id')
             ->columns([
-                Tables\Columns\TextColumn::make('product.title')
+                Tables\Columns\TextColumn::make('product.title_ru')
                     ->label('Название'),
-                Tables\Columns\ColorColumn::make('color')
+                Tables\Columns\ColorColumn::make('sku.color')
                     ->label('Цвет'),
-                Tables\Columns\TextColumn::make('sizes.size')
+                Tables\Columns\TextColumn::make('size')
                     ->label('Размер'),
                 Tables\Columns\TextColumn::make('qty')
                     ->label('К-во'),

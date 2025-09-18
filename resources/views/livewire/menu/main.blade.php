@@ -5,13 +5,16 @@
     </div>
     <ul class="navbar-nav">
         <li class="nav-item active">
-            <a wire:navigate.hover class="nav-link" href="{{route('main')}}">Главная</a>
+            <a wire:navigate.hover class="nav-link" href="{{route('main')}}">{{__('Main')}}</a>
         </li>
 
         @foreach($categories as $key=>$category)
             <li class="nav-item dropdown" wire:key="category-{{$key}}">
                 <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
-                    {{session()->get('locale')=='ru' ? $category->title_ru : $category->title_ua}} <i class='bx bx-chevron-down'></i>
+                    {{session()->get('locale') && session()->get('locale')=='ua'
+                        ? $category->title_ua
+                        : $category->title_ru}}
+                    <i class='bx bx-chevron-down'></i>
                 </a>
              @if($category->children)
                  <div class="dropdown-menu">

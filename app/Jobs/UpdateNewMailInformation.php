@@ -15,13 +15,13 @@ use Illuminate\Queue\SerializesModels;
 class UpdateNewMailInformation implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    protected $api_key;
+
     /**
      * Create a new job instance.
      */
-    public function __construct($api_key)
+    public function __construct()
     {
-        $this->api_key = $api_key;
+
     }
 
     /**

@@ -11,10 +11,11 @@ use App\Livewire\Comment\Comment;
 use Illuminate\Support\Facades\Route;
 
 Route::get('language/{locale}', function ($locale){
-    /*dd($locale);*/
-    app()->setLocale($locale);
-    session()->put('locale', $locale);
 
+    app()->setLocale($locale);
+
+    session()->put('locale', $locale);
+    /*dump(session()->get('locale'));*/
     return redirect()->back();
 });
 

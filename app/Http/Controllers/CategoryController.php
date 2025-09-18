@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Repositories\Category\CategoryRepository;
 use Illuminate\Http\Request;
 
 
@@ -12,9 +13,9 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(CategoryRepository $categoryRepository)
     {
-        $categories = Category::with('descendants', 'products')->whereNull('parent_id')->get();
+        $categories = $categoryRepository->getParentCategories();
 
         return view('category.index', compact('categories'));
     }

@@ -56,14 +56,20 @@
                                         <h6 class="text-uppercase mb-3">{{__('Categories')}}</h6>
                                         <ul class="list-unstyled mb-0 categories-list">
                                             @foreach($categories as $category)
-                                                <li class="category-item">
-                                                    <a wire:navigate class="category-item-link pt-2 pb-2" href="{{$category->id}}">
-                                                        {{session()->get('locale')=='ru' ? $category->title_ru : $category->title_ua}}
-                                                        @if($category->products->count())
-                                                            <span class="float-end badge rounded-pill bg-primary">{{$category->products->count()}}</span>
-                                                        @endif
-                                                    </a>
-                                                </li>
+                                                @if($category->products_count)
+                                                    <li class="category-item">
+                                                        <a wire:navigate class="category-item-link pt-2 pb-2" href="{{$category->id}}">
+                                                            <div class="row">
+                                                                <div class="col-md-10">
+                                                                    {{session()->get('locale') && session()->get('locale')=='ua' ? $category->title_ua : $category->title_ru}}
+                                                                </div>
+                                                                <div class="col-md-2  justify-content-center align-self-center">
+                                                                    <span class=" badge rounded-pill bg-primary">{{$category->products_count}}</span>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                @endif
                                             @endforeach
                                         </ul>
                                     </div>
@@ -96,8 +102,8 @@
                                         <p class="mb-0 font-13 text-nowrap" >{{__('Sort')}}:</p>
                                         <select class="form-select ms-3 rounded-0" wire:click="sort($event.target.value)">
                                             <option value="created_at asc">{{__('For date')}}</option>
-                                            <option value="{{session()->get('locale') == 'ru' ? 'title_ru' : 'title_ua'}} asc" >{{__('Name')}} А-Я</option>
-                                            <option value="{{session()->get('locale') == 'ru' ? 'title_ru' : 'title_ua'}} desc" >{{__('Name')}} Я-А</option>
+                                            <option value="{{session()->get('locale') && session()->get('locale')=='ua' ? 'title_ua' : 'title_ru'}} asc" >{{__('Name')}} А-Я</option>
+                                            <option value="{{session()->get('locale') && session()->get('locale')=='ua' ? 'title_ua' : 'title_ru'}} desc" >{{__('Name')}} Я-А</option>
                                             <option value="price asc" >{{__('From cheap to expensive')}}</option>
                                             <option value="price desc" >{{__('From expensive to cheap')}}</option>
                                         </select>
@@ -107,7 +113,9 @@
                             <div class="product-grid">
                                 @if(isset($products))
                                     <div  class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-3">
+                                        {{--@dd($products)--}}
                                         @foreach($products as $product)
+                                            {{--@dd($product)--}}
                                            {{-- @dump($products->count())--}}
                                             {{--<x-product-item :product="$product" x-lazy/>--}}
                                             <livewire:product.product-item :product="$product"  :key="time().$product->slug"/>
@@ -152,7 +160,13 @@
     "use strict";
 
     var slider = document.getElementById('slider');
+    var noui_base = document.querySelector('.noUi-base');
 
+    if(noui_base){
+        noui_base.remove()
+    }
+
+    /*document.querySelector('.noUi-base').remove()*/
     noUiSlider.create(slider, {
         start: [
             {{$minPrice && $minPrice != $maxPrice ? $minPrice : 0}},
@@ -181,8 +195,6 @@
         var sliderValue = slider.noUiSlider.get();
 
         window.Livewire.dispatch('priceRange', {range_price: sliderValue});
-
-        console.log("sliderValue: ", sliderValue);
     }
 
 </script>

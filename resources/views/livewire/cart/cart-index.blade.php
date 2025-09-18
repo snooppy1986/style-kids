@@ -256,13 +256,14 @@
                                                         </a>
                                                         <p class="mb-0">
 
-                                                            @if(isset($product['size_value']))
+                                                            @if(isset($product['size_value']) && $product['size_value'])
+                                                                {{--@dd($product['size_value'])--}}
                                                                 @if($product['type']=='cloth')
-                                                                    {{__('Age group')}}: {{$product['size_value']->value}}
+                                                                    {{__('Age group')}}: {{$product['size_value']}}
                                                                     {{trans_choice(session()->get('locale') ?
                                                                             session()->get('locale').'.years' :
                                                                             \Illuminate\Support\Facades\Lang::getLocale().'.years',
-                                                                    $product['size_value']->value)}}
+                                                                    $product['size_value'])}}
                                                                 @else
                                                                     {{__('Size')}}: {{$product['size_value']}}
                                                                 @endif
@@ -286,7 +287,7 @@
                                             </div>
                                             <div class="col-12 col-lg-2">
                                                 <div class="cart-action text-center">
-                                                    <input wire:change="updateCount({{'\''.$key.'\''}}, $event.target.value)"
+                                                    <input wire:change="updateCount({{$product['id']}}, $event.target.value)"
                                                            type="number"
                                                            class="form-control rounded-0"
                                                            value="{{$products_count[$key]}}"
@@ -373,7 +374,15 @@
                                                 <select wire:change="deliveryType($event.target.value)" class="form-select rounded-0">
                                                     <option value="" selected>{{__('Select shipping method')}}</option>
                                                     @foreach($delivery_companies as $company)
-                                                        <option value="{{$company->id}}" :key="d_{{$company->id}}">{{$company->name}}</option>
+                                                        <option value="{{$company->name}}" :key="d_{{$company->id}}">
+                                                            @if($company->name=='new_mail')
+                                                                {{__('New post')}}
+                                                            @elseif($company->name=='ukr_mail')
+                                                                {{__('Ukr post')}}
+                                                            @else
+                                                                MeestExpress
+                                                            @endif
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -393,14 +402,12 @@
 
                                             <div class="mb-3" >
                                                 @if($warehouses)
-                                                    <label class="form-label">{{__('Department')}}</label>
-                                                    <livewire:bootstrap.bootstrap-select :areas="$warehouses" :type="'set_warehouses'" :key="$city_id"/>
+                                                    <label class="form-label">{{$delivery_company == 'ukr_mail' ? __('Post Code') :__('Department')}}</label>
+                                                    <livewire:bootstrap.bootstrap-select wire:model="warehouse"
+                                                        :areas="$warehouses"
+                                                        :type="'set_warehouses'"
+                                                        :key="$city_id"/>
                                                 @endif
-                                            </div>
-
-                                            <div class="mb-0">
-                                                <label class="form-label">Zip/Postal Code</label>
-                                                <input type="email" class="form-control rounded-0">
                                             </div>
                                         </div>
                                     </div>

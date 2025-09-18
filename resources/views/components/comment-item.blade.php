@@ -1,7 +1,7 @@
 
 <div class="d-flex align-items-start w-100">
     <div class="review-user">
-        <img src="{{asset('storage/images/default-avatar.webp')}}" width="65" height="65" class="rounded-circle" alt="" />
+        <img src="{{asset('storage/images/avatar-default.svg')}}" width="65" height="65" class="rounded-circle" alt="" />
     </div>
     <div class="review-content ms-3">
         <div class="rates cursor-pointer fs-6">
