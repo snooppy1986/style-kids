@@ -60,6 +60,6 @@ class CompanyInfo extends Model
             return $this->logo;
         }
 
-        return asset('storage/'.$this->logo);
+        return asset('storage/images/logo/'.$this->logo);
     }
 }

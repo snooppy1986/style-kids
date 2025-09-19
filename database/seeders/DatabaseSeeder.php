@@ -15,6 +15,7 @@ use App\Models\Customer;
 use App\Models\DeliveryCompany;
 use App\Models\Order;
 use App\Models\OrderProduct;
+use App\Models\Phone;
 use App\Models\Product;
 use App\Models\ProductCharacteristics;
 use App\Models\ProductGallery;
@@ -26,6 +27,7 @@ use Closure;
 use Filament\Notifications\Collection;
 use Illuminate\Database\Seeder;
 use Illuminate\Notifications\Action;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
@@ -38,14 +40,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::raw('SET time_zone=\'+00:00\'');
+        Cache::flush();
+        // Set timezone
+        DB::raw('SET time_zone=\'+02:00\'');
 
         // Clear images
-        Storage::deleteDirectory('public/images');
+        Storage::disk('public')->deleteDirectory('images');
         //create directory to image
-        Storage::makeDirectory('public/images/products');
-        Storage::makeDirectory('public/images/categories');
-        Storage::makeDirectory('public/images/sliders');
+        Storage::disk('public')->makeDirectory('images/products');
+        Storage::disk('public')->makeDirectory('images/categories');
+        Storage::disk('public')->makeDirectory('images/sliders');
+        Storage::disk('public')->makeDirectory('images/logo');
 
         // Admin
         $this->command->warn(PHP_EOL . 'Creating admin user...');
@@ -56,37 +61,58 @@ class DatabaseSeeder extends Seeder
         ]));
         $this->command->info('Admin user created.');
 
-        /*$this->command->warn(PHP_EOL . 'Creating shop delivery companies...');
+        $this->command->warn(PHP_EOL . 'Creating shop delivery companies...');
             DeliveryCompany::factory(2)->create();
-        $this->command->info('Shop delivery companies created.');*/
+        $this->command->info('Shop delivery companies created.');
 
-        /*$this->command->warn(PHP_EOL . 'Creating shop info...');
-            CompanyInfo::factory(1)->create();
-        $this->command->info('Shop info created.');*/
+        $this->command->warn(PHP_EOL . 'Creating shop slider option...');
+            Slider::factory(6)->create();
+        $this->command->info('Shop slider created.');
 
-        /*$this->command->warn(PHP_EOL . 'Creating product attributes...');
-           Attribute::factory()->count(2)->create();
-        $this->command->info('Shop product attributes created.');*/
+        $this->command->warn(PHP_EOL . 'Creating shop info...');
+            CompanyInfo::factory(1)
+                ->has(
+                    Phone::factory()->count(3)    
+                )
+                ->create();
+        $this->command->info('Shop info created.');
 
-        /*$this->command->warn(PHP_EOL . 'Creating shop product option...');
-            $attributeOptions = AttributeOption::factory()->count(10)->create();
-        $this->command->info('Shop product option created.');*/
-
-        /*$this->command->warn(PHP_EOL . 'Creating shop categories...');
+        $this->command->warn(PHP_EOL . 'Creating shop categories...');
         $categories = $this->withProgressBar(6, fn () => Category::factory(1)
             ->has(
-                $children = Category::factory()->count(3),
+                $children = Category::factory()
+                    ->has(Product::factory()
+                        ->has(ProductCharacteristics::factory(1))
+                        ->has(Sku::factory(2))
+                        ->count(5))                    
+                    ->count(1), //category children count
                 'children'
             )->create());
-        $this->command->info('Shop categories created.');*/
+        $this->command->info('Shop categories created.');
 
-        /*$this->command->warn(PHP_EOL . 'Creating shop customers...');
+        /* $this->command->warn(PHP_EOL . 'Creating product attributes...');
+           Attribute::factory()->count(2)->create();
+        $this->command->info('Shop product attributes created.');
+
+        $this->command->warn(PHP_EOL . 'Creating shop product option...');
+            $attributeOptions = AttributeOption::factory()->count(10)->create();
+        $this->command->info('Shop product option created.');
+
+        $this->command->warn(PHP_EOL . 'Creating shop categories...');
+        $categories = $this->withProgressBar(6, fn () => Category::factory(1)
+            ->has(
+                $children = Category::factory()->count(),
+                'children'
+            )->create());
+        $this->command->info('Shop categories created.');
+
+        $this->command->warn(PHP_EOL . 'Creating shop customers...');
         $customers = $this->withProgressBar(1000, fn () => Customer::factory(1)
             ->has(Address::factory()->count(rand(1, 3)))
             ->create());
-        $this->command->info('Shop customers created.');*/
+        $this->command->info('Shop customers created.');
 
-        /*$this->command->warn(PHP_EOL . 'Creating shop products...');
+        $this->command->warn(PHP_EOL . 'Creating shop products...');
         $products = $this->withProgressBar(50, fn () => Product::factory(1)
             ->hasAttached($categories->random(rand(1, 3)), ['created_at' => now(), 'updated_at' => now()])
             ->has(ProductGallery::factory()->count(rand(1, 4)))
@@ -98,9 +124,9 @@ class DatabaseSeeder extends Seeder
                 ->has(Size::factory()->count(rand(1, 3)))
                 ->count(rand(1, 4)))
             ->create());
-        $this->command->info('Shop products created.');*/
+        $this->command->info('Shop products created.');
 
-       /* $this->command->warn(PHP_EOL . 'Creating orders...');
+       $this->command->warn(PHP_EOL . 'Creating orders...');
         $orders = $this->withProgressBar(1000, fn () => Order::factory(1)
             ->sequence(fn ($sequence) => ['customer_id' => $customers->random(1)->first()->id])
             ->has(
@@ -108,12 +134,10 @@ class DatabaseSeeder extends Seeder
                     ->state(fn (array $attributes, Order $order) => ['product_id' => $products->random(1)->first()->id]),
                 'order_products'
             )
-            ->create());*/
+            ->create()); */
 
-        /*$this->command->warn(PHP_EOL . 'Creating shop slider option...');
-            Slider::factory(6)->create();
-        $this->command->info('Shop slider created.');*/
-        /*foreach ($orders->random(rand(5, 8)) as $order) {
+        
+        /* foreach ($orders->random(rand(5, 8)) as $order) {
             Notification::make()
                 ->title('New order')
                 ->icon('heroicon-o-shopping-bag')
@@ -123,10 +147,10 @@ class DatabaseSeeder extends Seeder
                         ->url(OrderResource::getUrl('edit', ['record' => $order])),
                 ])
                 ->sendToDatabase($user);
-        }*/
-        /*$this->command->info('Shop orders created.');*/
+        } */
+        /* $this->command->info('Shop orders created.');
 
-       /* CompanyInfo::factory(1)->create();
+       CompanyInfo::factory(1)->create();
         DeliveryCompany::factory(2)->create();
 
         $attribute = Attribute::factory(2)
@@ -147,7 +171,7 @@ class DatabaseSeeder extends Seeder
             )
             ->create();
 
-        Slider::factory(6)->create();*/
+        Slider::factory(6)->create(); */
     }
 
     protected function withProgressBar(int $amount, Closure $createCollectionOfOne): Collection

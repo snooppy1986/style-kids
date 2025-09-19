@@ -21,7 +21,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->string('code');
             $table->integer('price');
-            $table->integer('discount_price');
+            $table->integer('discount_price')->nullable();
             $table->string('color')->default('#FFFFFF');
             $table->boolean('new')->default(false);
             $table->boolean('hit')->default(false);

@@ -89,7 +89,7 @@ class Category extends Model
         if(str_starts_with($this->thumbnail, 'http')){
             return $this->thumbnail;
         }
-        return 'storage/'.$this->thumbnail;
+        return 'storage/images/categories/'.$this->thumbnail;
     }
 
 

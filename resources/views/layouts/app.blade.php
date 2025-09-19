@@ -65,7 +65,11 @@
                             </div>
                             <div class="logo d-none d-lg-flex">
                                 <a wire:navigate href="{{route('main')}}">
-                                    <img src="{{asset($company_info->getLogo())}}" class="logo-icon" alt="" />
+                                    <img src="{{asset($company_info->getLogo())}}" 
+                                    class="logo-icon" 
+                                    width="150"
+                                    height="100"
+                                    alt="Logo" />
                                 </a>
                             </div>
                         </div>

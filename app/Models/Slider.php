@@ -45,6 +45,6 @@ class Slider extends Model
             return $this->image;
         }
 
-        return 'storage/'.$this->image;
+        return 'storage/images/sliders/'.$this->image;
     }
 }

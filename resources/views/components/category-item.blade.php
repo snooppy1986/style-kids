@@ -1,15 +1,16 @@
 <div class="item">
     <div class="card rounded-0 product-card border">
         <div class="card-body">
-            <a wire:navigate href="{{route('category.show', ['id'=>$category->id])}}">
-                <img src="{{$category->getThumbnail()}}"
-                     style="height: 200px"
-                     width="200"
-                     height="200"
-                     class="img-fluid"
-                     alt="Картинка категории {{$category->title_ua}}">
-            </a>
-
+            @if($category->thumbnail)
+                <a wire:navigate href="{{route('category.show', ['id'=>$category->id])}}">
+                    <img src="{{$category->getThumbnail()}}"
+                        style="height: 200px"
+                        width="200"
+                        height="200"
+                        class="img-fluid"
+                        alt="Картинка категории {{$category->title_ua}}">
+                </a>
+            @endif
         </div>
         <div class="card-footer text-center">
             <a wire:navigate href="{{route('category.show', ['id'=>$category->id])}}">

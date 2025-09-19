@@ -136,6 +136,6 @@ class Product extends Model
             return $this->thumbnail;
         }
 
-        return asset('storage/'.$this->thumbnail);
+        return asset('storage/images/products/'.$this->thumbnail);
     }
 }

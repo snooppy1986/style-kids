@@ -10,16 +10,15 @@ use PHPUnit\Framework\TestCase;
 
 class ProductResourceTest extends TestCase
 {
-    protected $model;
-    public function __construct(Product $product)  
-    {
-        $this->model = $product;
-    }
-    /**
-     * A basic unit test example.
-     */
     public function test_product_repository(): void
     {
-        dd($this->model->get());       
+        $product = Product::create([
+            'name' => 'Test Product',
+            'description' => 'This is a test product.',
+            'price' => 99.99,
+            'stock' => 10,
+        ]);
+
+        $this->assertIsArray($product->toArray());    
     }
 }
