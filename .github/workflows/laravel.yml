@@ -54,7 +54,7 @@ jobs:
     - name: Run database migrations or tests
       run: |
         composer update
-        php artisan migrate --force               
+        php artisan migrate --force --seed              
 
     - name: Execute tests (Unit and Feature tests) via PHPUnit/Pest     
       run: php artisan test
