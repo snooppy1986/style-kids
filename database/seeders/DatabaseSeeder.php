@@ -78,13 +78,13 @@ class DatabaseSeeder extends Seeder
         $this->command->info('Shop info created.');
 
         $this->command->warn(PHP_EOL . 'Creating shop categories...');
-        $categories = $this->withProgressBar(6, fn () => Category::factory(1)
+        $categories = $this->withProgressBar(2, fn () => Category::factory(1)
             ->has(
                 $children = Category::factory()
                     ->has(Product::factory()
                         ->has(ProductCharacteristics::factory(1))
                         ->has(Sku::factory(2))
-                        ->count(5))                    
+                        ->count(2))                    
                     ->count(1), //category children count
                 'children'
             )->create());

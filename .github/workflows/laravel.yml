@@ -51,9 +51,16 @@ jobs:
           sleep 1
         done
 
-    - name: Run database migrations or tests
+    - name: Run composer update
       run: |
         composer update
+             
+    - name: Set a key option
+      run: |
+        php artisan key:generate
+              
+    - name: Run database migrations
+      run:        
         php artisan migrate --force --seed              
 
     - name: Execute tests (Unit and Feature tests) via PHPUnit/Pest     
