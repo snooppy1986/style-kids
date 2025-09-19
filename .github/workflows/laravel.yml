@@ -53,6 +53,7 @@ jobs:
 
     - name: Run database migrations or tests
       run: |
+        composer update
         php artisan migrate --force               
 
     - name: Execute tests (Unit and Feature tests) via PHPUnit/Pest     
