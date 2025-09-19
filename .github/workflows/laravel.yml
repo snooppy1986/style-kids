@@ -54,7 +54,11 @@ jobs:
     - name: Run composer update
       run: |
         composer update
-             
+
+    - name: Generrate .env file
+      run: |
+        cp .env.example .env   
+
     - name: Set a key option
       run: |
         php artisan key:generate
