@@ -74,7 +74,7 @@ jobs:
         DB_USERNAME: sail
         DB_PASSWORD: password
       run:        
-        php artisan migrate --force   
+        php artisan migrate --force --seed  
         
     - name: Wait for MySQL
       run: |
