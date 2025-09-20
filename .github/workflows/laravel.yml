@@ -74,5 +74,12 @@ jobs:
       run:        
         php artisan migrate --force --seed              
 
-    - name: Execute tests (Unit and Feature tests) via PHPUnit/Pest     
+    - name: Execute tests (Unit and Feature tests) via PHPUnit/Pest 
+      env:
+        DB_CONNECTION: mysql
+        DB_HOST: 127.0.0.1
+        DB_PORT: 3306
+        DB_DATABASE: laravel
+        DB_USERNAME: sail
+        DB_PASSWORD: password    
       run: php artisan test
