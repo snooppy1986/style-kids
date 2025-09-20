@@ -78,7 +78,7 @@ jobs:
         
     - name: Wait for MySQL
       run: |
-        until mysql -h 127.0.0.1 -u laravel -plaravel -e "SELECT 1" laravel; do
+        until mysql -h 127.0.0.1 -u sail -ppassword -e "SELECT 1" laravel; do
           sleep 5
         done    
 
