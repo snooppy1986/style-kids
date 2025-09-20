@@ -74,7 +74,13 @@ jobs:
               
     - name: Run database migrations
       run:        
-        php artisan migrate --force --seed              
+        php artisan migrate --force   
+        
+    - name: Wait for MySQL
+      run: |
+        until mysql -h 127.0.0.1 -u laravel -plaravel -e "SELECT 1" laravel; do
+          sleep 5
+        done    
 
     - name: Execute tests (Unit and Feature tests) via PHPUnit/Pest 
       env:
